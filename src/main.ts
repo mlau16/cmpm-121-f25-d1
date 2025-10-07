@@ -16,10 +16,25 @@ const counterElement = document.getElementById("counter")!;
 
 button.addEventListener("click", () => {
   counter += 1;
-  counterElement.textContent = counter.toString();
+  updateDisplay();
 });
 
-setInterval(() => {
-  counter++;
-  counterElement.textContent = counter.toString();
-}, 1000);
+//Update Counter Display
+function updateDisplay() {
+  counterElement.textContent = Math.floor(counter).toString();
+}
+
+//Animation using requestAnimationFrame
+let lastTime: number | null = null;
+
+function animate(currentTime: number) {
+  if (lastTime !== null) {
+    const deltaTime = (currentTime - lastTime) / 1000;
+    counter += deltaTime;
+    updateDisplay();
+  }
+  lastTime = currentTime;
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
