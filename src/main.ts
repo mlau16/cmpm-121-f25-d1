@@ -18,3 +18,8 @@ button.addEventListener("click", () => {
   counter += 1;
   counterElement.textContent = counter.toString();
 });
+
+setInterval(() => {
+  counter++;
+  counterElement.textContent = counter.toString();
+}, 1000);
