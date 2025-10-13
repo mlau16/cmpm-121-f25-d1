@@ -2,8 +2,15 @@ import catIconUrl from "./cat.png";
 import milkIconUrl from "./milk.png";
 import yarnIconUrl from "./yarn.webp";
 import mouseIconUrl from "./mouse.png";
+import meowSoundUrl from "./meow.mp3";
 
 import "./style.css";
+
+const fontLink = document.createElement("link");
+fontLink.rel = "stylesheet";
+fontLink.href =
+  "https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap";
+document.head.appendChild(fontLink);
 
 //counter
 let counter: number = 0;
@@ -16,15 +23,41 @@ let yarnOwned: number = 0;
 let mouseOwned: number = 0;
 
 document.body.innerHTML = `
-  <head>
-    <style>
-      body {
-        text-align: center;
-        font-size: 300%;
-        font-family: Courier New"
-      }
-    </style>
-  </head>
+  <style>
+    body {
+      text-align: center;
+      font-size: 300%;
+      font-family: 'Comic Neue', sans-serif;
+      background-color: #fff8e7; /* light cream color */
+      color: #333;
+    }
+
+    .icon {
+      border: none;
+      outline: none;
+      width: 64px;
+      height: 64px;
+    }
+    
+    .cat-icon {
+      width: 240px;
+      height: 240px;
+    }
+
+    button {
+      background-color: #fce4ec; 
+      border: 2px solid #fce4ec;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
 
   <body>
     <header>
@@ -35,7 +68,7 @@ document.body.innerHTML = `
   </body>
   
 
-  <button id="increment"><img src="${catIconUrl}" class="icon" />
+  <button id="increment"><img src="${catIconUrl}" class="cat-icon" />
   </button>
   <p> Items: </p>
   <button id="buyMilk" disabled>
@@ -71,9 +104,12 @@ const mouseCostElement = document.getElementById("mouseCost")!;
 const milkOwnedElement = document.getElementById("milkOwned")!;
 const yarnOwnedElement = document.getElementById("yarnOwned")!;
 const mouseOwnedElement = document.getElementById("mouseOwned")!;
+const meowSound = new Audio(meowSoundUrl);
 
 button.addEventListener("click", () => {
   counter += 1;
+  meowSound.currentTime = 0;
+  meowSound.play();
   updateDisplay();
 });
 
