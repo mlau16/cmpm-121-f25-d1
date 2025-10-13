@@ -8,9 +8,9 @@ import "./style.css";
 //counter
 let counter: number = 0;
 let growthRate: number = 0;
-let sellRate1: number = 10;
-let sellRate2: number = 100;
-let sellRate3: number = 1000;
+let milkCost: number = 10;
+let yarnCost: number = 100;
+let mouseCost: number = 1000;
 let milkOwned: number = 0;
 let yarnOwned: number = 0;
 let mouseOwned: number = 0;
@@ -78,24 +78,24 @@ button.addEventListener("click", () => {
 });
 
 milkButton.addEventListener("click", () => {
-  counter -= sellRate1;
-  sellRate1 += 10;
+  counter -= milkCost;
+  milkCost = milkCost * 1.15;
   growthRate += 0.1;
   milkOwned += 1;
   updateDisplay();
 });
 
 yarnButton.addEventListener("click", () => {
-  counter -= sellRate2;
-  sellRate2 += 100;
+  counter -= yarnCost;
+  yarnCost = yarnCost * 1.15;
   growthRate += 2;
   yarnOwned += 1;
   updateDisplay();
 });
 
 mouseButton.addEventListener("click", () => {
-  counter -= sellRate3;
-  sellRate3 += 1000;
+  counter -= mouseCost;
+  mouseCost = mouseCost * 1.15;
   growthRate += 50;
   mouseOwned += 1;
   updateDisplay();
@@ -105,16 +105,21 @@ mouseButton.addEventListener("click", () => {
 function updateDisplay() {
   const intCounter = Math.floor(counter);
   counterElement.textContent = intCounter.toString();
-  growthElement.textContent = growthRate.toString();
 
-  milkButton.disabled = intCounter < sellRate1;
-  milkCostElement.textContent = sellRate1.toString();
+  const intGrowth = Math.round(growthRate * 100) / 100; //rounds to 2 decimals
+  growthElement.textContent = intGrowth.toString();
 
-  yarnButton.disabled = intCounter < sellRate2;
-  yarnCostElement.textContent = sellRate2.toString();
+  const milkCounter = Math.round(milkCost * 100) / 100;
+  milkButton.disabled = intCounter < milkCounter;
+  milkCostElement.textContent = milkCounter.toString();
 
-  mouseButton.disabled = intCounter < sellRate3;
-  mouseCostElement.textContent = sellRate3.toString();
+  const yarnCounter = Math.round(yarnCost * 100) / 100;
+  yarnButton.disabled = intCounter < yarnCounter;
+  yarnCostElement.textContent = yarnCounter.toString();
+
+  const mouseCounter = Math.round(mouseCost * 100) / 100;
+  mouseButton.disabled = intCounter < mouseCounter;
+  mouseCostElement.textContent = mouseCounter.toString();
 
   milkOwnedElement.textContent = milkOwned.toString();
   yarnOwnedElement.textContent = yarnOwned.toString();
