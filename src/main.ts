@@ -1,8 +1,10 @@
+import catToyIconUrl from "./cat-toy.webp";
 import catIconUrl from "./cat.png";
-import milkIconUrl from "./milk.png";
-import yarnIconUrl from "./yarn.webp";
-import mouseIconUrl from "./mouse.png";
 import meowSoundUrl from "./meow.mp3";
+import milkIconUrl from "./milk.png";
+import mouseIconUrl from "./mouse.png";
+import tunaIconUrl from "./tuna.webp";
+import yarnIconUrl from "./yarn.webp";
 
 import "./style.css";
 
@@ -18,26 +20,69 @@ interface Item {
   rate: number;
   owned: number;
   icon: string;
+  description: string;
 }
 
 const availableItems: Item[] = [
-  { name: "Milk", cost: 10, rate: 0.1, owned: 0, icon: milkIconUrl },
-  { name: "Yarn", cost: 100, rate: 2, owned: 0, icon: yarnIconUrl },
-  { name: "Mouse", cost: 1000, rate: 50, owned: 0, icon: mouseIconUrl },
+  {
+    name: "Milk",
+    cost: 10,
+    rate: 0.1,
+    owned: 0,
+    icon: milkIconUrl,
+    description: "A refreshing treat for cats!",
+  },
+  {
+    name: "Yarn",
+    cost: 100,
+    rate: 2,
+    owned: 0,
+    icon: yarnIconUrl,
+    description: "Cats love to play with yarn!",
+  },
+  {
+    name: "Mouse",
+    cost: 1000,
+    rate: 50,
+    owned: 0,
+    icon: mouseIconUrl,
+    description: "Cats eat mice.",
+  },
+  {
+    name: "Cat Toy",
+    cost: 5000,
+    rate: 100,
+    owned: 0,
+    icon: catToyIconUrl,
+    description: "Ultimate entertainment!",
+  },
+  {
+    name: "Tuna",
+    cost: 10000,
+    rate: 200,
+    owned: 0,
+    icon: tunaIconUrl,
+    description: "Delicious fish boosts energy!",
+  },
 ];
 
 //counter
 let counter: number = 0;
 let growthRate: number = 0;
 
-let itemButtonsHTML = availableItems
+const itemButtonsHTML = availableItems
   .map(
     (item, index) => `
-      <button id="buy-${index}" disabled>
-        <p>${item.name} Owned: <span id="${item.name}-owned">0</span></p>
-        <img src="${item.icon}" class="icon" />
-        <p>Buy ${item.name}: <span id="${item.name}-cost">${item.cost}</span></p>
-      </button>
+      <div class="item-row">
+        <button id="buy-${index}" disabled>
+          <p>${item.name} Owned: <span id="${item.name}-owned">0</span></p>
+          <img src="${item.icon}" class="icon" />
+          <p>Buy ${item.name}: <span id="${item.name}-cost">${item.cost}</span></p>
+        </button>
+        <div class="description">
+          ${item.description}
+        </div>
+      </div>
     `,
   ).join("");
 
@@ -61,6 +106,7 @@ document.body.innerHTML = `
     .cat-icon {
       width: 240px;
       height: 240px;
+      
     }
 
     button {
@@ -76,22 +122,71 @@ document.body.innerHTML = `
       opacity: 0.5;
       cursor: not-allowed;
     }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin-top: 30px;
+      height: 80vh;
+    }
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 10px 0;
+    }
+
+    .item-row button {
+      margin-right: 20px;
+    }
+
+    .description {
+      font-size: 40%;
+      color: #444;
+      max-width: 200px;
+      text-align: left;
+    }
+
   </style>
 
   <body>
-    <header>
-    <b><div>Cats: <span id="counter">0</span></div></b>
-    <div style="font-size: 50%"><span id="growthRate">0</span> cats/sec</div>
-    
-    </header>
-  </body>
   
+    <div class="container">
+      <div class="left">
+        <div class="cat-info">
+          <b><div>Cats: <span id="counter">0</span></div></b>
+          <div style="font-size: 50%"><span id="growthRate">0</span> cats/sec</div>
+        </div>
 
-  <button id="increment"><img src="${catIconUrl}" class="cat-icon" />
-  </button>
+        <button id="increment">
+          <img src="${catIconUrl}" class="cat-icon" />
+        </button>
+      </div>
 
-  <p>Items:</p>
-  ${itemButtonsHTML}
+      <div class="right">
+        <p>Items:</p>
+        ${itemButtonsHTML}
+      </div>
+    </div>
+
+  </body>
   `;
 
 //Add click handler
