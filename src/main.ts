@@ -12,15 +12,34 @@ fontLink.href =
   "https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap";
 document.head.appendChild(fontLink);
 
+interface Item {
+  name: string;
+  cost: number;
+  rate: number;
+  owned: number;
+  icon: string;
+}
+
+const availableItems: Item[] = [
+  { name: "Milk", cost: 10, rate: 0.1, owned: 0, icon: milkIconUrl },
+  { name: "Yarn", cost: 100, rate: 2, owned: 0, icon: yarnIconUrl },
+  { name: "Mouse", cost: 1000, rate: 50, owned: 0, icon: mouseIconUrl },
+];
+
 //counter
 let counter: number = 0;
 let growthRate: number = 0;
-let milkCost: number = 10;
-let yarnCost: number = 100;
-let mouseCost: number = 1000;
-let milkOwned: number = 0;
-let yarnOwned: number = 0;
-let mouseOwned: number = 0;
+
+let itemButtonsHTML = availableItems
+  .map(
+    (item, index) => `
+      <button id="buy-${index}" disabled>
+        <p>${item.name} Owned: <span id="${item.name}-owned">0</span></p>
+        <img src="${item.icon}" class="icon" />
+        <p>Buy ${item.name}: <span id="${item.name}-cost">${item.cost}</span></p>
+      </button>
+    `,
+  ).join("");
 
 document.body.innerHTML = `
   <style>
@@ -70,40 +89,17 @@ document.body.innerHTML = `
 
   <button id="increment"><img src="${catIconUrl}" class="cat-icon" />
   </button>
-  <p> Items: </p>
-  <button id="buyMilk" disabled>
-    <p style="color: Black">Milk Owned: <span id="milkOwned">0</span></p>
-    <img src="${milkIconUrl}" class="icon" /> 
-    <p style="color: Black">Buy Milk: <span id="milkCost">10</span></p>
-  </button>
-  
-  <button id="buyYarn" disabled>
-    <p style="color: Black">Yarn Owned: <span id="yarnOwned">0</span></p>
-    <img src="${yarnIconUrl}" class="icon" /> 
-    <p style="color: Black">Buy Yarn: <span id="yarnCost">100</span></p> 
-  </button>
 
-  <button id="buyMouse" disabled>
-    <p style="color: Black">Mouse Owned: <span id="mouseOwned">0</span></p>
-    <img src="${mouseIconUrl}" class="icon" /> 
-    <p style="color: Black">Buy Mouse: <span id="mouseCost">1000</span></p> 
-  </button>
-
+  <p>Items:</p>
+  ${itemButtonsHTML}
   `;
 
 //Add click handler
 const button = document.getElementById("increment")!;
-const milkButton = document.getElementById("buyMilk")! as HTMLButtonElement;
-const yarnButton = document.getElementById("buyYarn")! as HTMLButtonElement;
-const mouseButton = document.getElementById("buyMouse")! as HTMLButtonElement;
+
 const counterElement = document.getElementById("counter")!;
 const growthElement = document.getElementById("growthRate")!;
-const milkCostElement = document.getElementById("milkCost")!;
-const yarnCostElement = document.getElementById("yarnCost")!;
-const mouseCostElement = document.getElementById("mouseCost")!;
-const milkOwnedElement = document.getElementById("milkOwned")!;
-const yarnOwnedElement = document.getElementById("yarnOwned")!;
-const mouseOwnedElement = document.getElementById("mouseOwned")!;
+
 const meowSound = new Audio(meowSoundUrl);
 
 button.addEventListener("click", () => {
@@ -113,28 +109,20 @@ button.addEventListener("click", () => {
   updateDisplay();
 });
 
-milkButton.addEventListener("click", () => {
-  counter -= milkCost;
-  milkCost = milkCost * 1.15;
-  growthRate += 0.1;
-  milkOwned += 1;
-  updateDisplay();
-});
+availableItems.forEach((item, index) => {
+  const buyButton = document.getElementById(
+    `buy-${index}`,
+  ) as HTMLButtonElement;
 
-yarnButton.addEventListener("click", () => {
-  counter -= yarnCost;
-  yarnCost = yarnCost * 1.15;
-  growthRate += 2;
-  yarnOwned += 1;
-  updateDisplay();
-});
-
-mouseButton.addEventListener("click", () => {
-  counter -= mouseCost;
-  mouseCost = mouseCost * 1.15;
-  growthRate += 50;
-  mouseOwned += 1;
-  updateDisplay();
+  buyButton.addEventListener("click", () => {
+    if (counter >= item.cost) {
+      counter -= item.cost;
+      item.cost *= 1.15;
+      growthRate += item.rate;
+      item.owned += 1;
+      updateDisplay();
+    }
+  });
 });
 
 //Update Counter Display
@@ -142,24 +130,21 @@ function updateDisplay() {
   const intCounter = Math.floor(counter);
   counterElement.textContent = intCounter.toString();
 
-  const intGrowth = Math.round(growthRate * 100) / 100; //rounds to 2 decimals
-  growthElement.textContent = intGrowth.toString();
+  const roundedGrowth = Math.round(growthRate * 100) / 100; //rounds to 2 decimals
+  growthElement.textContent = roundedGrowth.toString();
 
-  const milkCounter = Math.round(milkCost * 100) / 100;
-  milkButton.disabled = intCounter < milkCounter;
-  milkCostElement.textContent = milkCounter.toString();
+  availableItems.forEach((item, index) => {
+    const costElement = document.getElementById(`${item.name}-cost`)!;
+    const ownedElement = document.getElementById(`${item.name}-owned`)!;
+    const buyButton = document.getElementById(
+      `buy-${index}`,
+    ) as HTMLButtonElement;
 
-  const yarnCounter = Math.round(yarnCost * 100) / 100;
-  yarnButton.disabled = intCounter < yarnCounter;
-  yarnCostElement.textContent = yarnCounter.toString();
-
-  const mouseCounter = Math.round(mouseCost * 100) / 100;
-  mouseButton.disabled = intCounter < mouseCounter;
-  mouseCostElement.textContent = mouseCounter.toString();
-
-  milkOwnedElement.textContent = milkOwned.toString();
-  yarnOwnedElement.textContent = yarnOwned.toString();
-  mouseOwnedElement.textContent = mouseOwned.toString();
+    const roundedCost = Math.round(item.cost * 100) / 100;
+    costElement.textContent = roundedCost.toString();
+    ownedElement.textContent = item.owned.toString();
+    buyButton.disabled = counter < item.cost;
+  });
 }
 
 //Animation using requestAnimationFrame
