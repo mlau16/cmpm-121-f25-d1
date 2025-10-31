@@ -87,107 +87,24 @@ const itemButtonsHTML = availableItems
   ).join("");
 
 document.body.innerHTML = `
-  <style>
-    body {
-      text-align: center;
-      font-size: 300%;
-      font-family: 'Comic Neue', sans-serif;
-      background-color: #fff8e7; /* light cream color */
-      color: #333;
-    }
-
-    .icon {
-      border: none;
-      outline: none;
-      width: 64px;
-      height: 64px;
-    }
-    
-    .cat-icon {
-      width: 240px;
-      height: 240px;
-      
-    }
-
-    button {
-      background-color: #fce4ec; 
-      border: 2px solid #fce4ec;
-      border-radius: 10px;
-      padding: 10px;
-      margin: 10px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
-      margin-top: 30px;
-      height: 80vh;
-    }
-
-    .left {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-    }
-
-    .right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .item-row {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      margin: 10px 0;
-    }
-
-    .item-row button {
-      margin-right: 20px;
-    }
-
-    .description {
-      font-size: 40%;
-      color: #444;
-      max-width: 200px;
-      text-align: left;
-    }
-
-  </style>
-
-  <body>
-  
-    <div class="container">
-      <div class="left">
-        <div class="cat-info">
-          <b><div>Cats: <span id="counter">0</span></div></b>
-          <div style="font-size: 50%"><span id="growthRate">0</span> cats/sec</div>
-        </div>
-
-        <button id="increment">
-          <img src="${catIconUrl}" class="cat-icon" />
-        </button>
-      </div>
-
-      <div class="right">
-        <p>Items:</p>
-        ${itemButtonsHTML}
-      </div>
+ <div class="container">
+  <div class="left">
+    <div class="cat-info">
+      <b><div>Cats: <span id="counter">0</span></div></b>
+      <div style="font-size: 50%"><span id="growthRate">0</span> cats/sec</div>
     </div>
 
-  </body>
-  `;
+    <button id="increment">
+      <img src="${catIconUrl}" class="cat-icon" />
+    </button>
+  </div>
+
+  <div class="right">
+    <p>Items:</p>
+    ${itemButtonsHTML}
+  </div>
+</div>
+`;
 
 //Add click handler
 const button = document.getElementById("increment")!;

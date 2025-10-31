@@ -3,3 +3,115 @@
   vertical-align: top;
   border: 1px solid salmon;
 }
+
+body {
+  text-align: center;
+  font-size: 300%;
+  font-family: "Comic Neue", sans-serif;
+  background-color: #fff8e7;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.icon {
+  border: 1px;
+  border-radius: 8px;
+  outline: none;
+  width: 64px;
+  height: 64px;
+  vertical-align: top;
+  transition: transform 0.2s ease;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+.cat-icon {
+  width: 240px;
+  height: 240px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.cat-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+#increment:hover {
+  cursor: url("./hand_emoji.png") 8 2, pointer;
+}
+
+button {
+  background-color: #fce4ec;
+  border: 2px solid #fce4ec;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #f8bbd0;
+  transform: scale(1.05);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 30px;
+  height: 80vh;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #fffdf8;
+  padding: 20px 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 200, 150, 0.3);
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.item-row button {
+  margin-right: 20px;
+  font-size: 40%;
+}
+
+.description {
+  font-size: 40%;
+  color: #444;
+  max-width: 200px;
+  text-align: left;
+}
