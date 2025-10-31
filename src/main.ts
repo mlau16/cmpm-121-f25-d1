@@ -105,6 +105,7 @@ document.body.innerHTML = `
   </div>
 </div>
 `;
+const container = document.querySelector(".container") as HTMLElement;
 
 //Add click handler
 const button = document.getElementById("increment")!;
@@ -114,11 +115,16 @@ const growthElement = document.getElementById("growthRate")!;
 
 const meowSound = new Audio(meowSoundUrl);
 
-button.addEventListener("click", () => {
+button.addEventListener("click", (ev) => {
   counter += 1;
   meowSound.currentTime = 0;
   meowSound.play();
   updateDisplay();
+
+  const rect = button.getBoundingClientRect();
+  const x = ev.clientX ?? rect.left + rect.width / 2;
+  const y = ev.clientY ?? rect.top + rect.height / 2;
+  showFloatingText(1, x, y);
 });
 
 availableItems.forEach((item, index) => {
@@ -173,3 +179,19 @@ function animate(currentTime: number) {
 }
 
 requestAnimationFrame(animate);
+
+//floating text inspired by wendyzh05
+
+function showFloatingText(amount: number, x: number, y: number) {
+  const el = document.createElement("div");
+  el.className = "floating-text";
+  el.textContent = `+${amount.toFixed(1)}`;
+
+  const rect = container.getBoundingClientRect();
+  // Offset so it appears centered near click
+  el.style.left = `${x - rect.left - 10}px`;
+  el.style.top = `${y - rect.top - 20}px`;
+  container.appendChild(el);
+
+  el.addEventListener("animationend", () => el.remove());
+}

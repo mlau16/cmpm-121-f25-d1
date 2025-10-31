@@ -115,3 +115,27 @@ button:disabled {
   max-width: 200px;
   text-align: left;
 }
+
+/* ---floating text animation inspired by wendyzh05 */
+
+.floating-text {
+  position: absolute;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff6fb7;
+  pointer-events: none;
+  user-select: none;
+  animation: floatUp 1s ease-out forwards;
+  text-shadow: 0 0 6px rgba(255, 182, 193, 0.8);
+}
+
+@keyframes floatUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+}
