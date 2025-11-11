@@ -70,41 +70,55 @@ const availableItems: Item[] = [
 let counter: number = 0;
 let growthRate: number = 0;
 
-const itemButtonsHTML = availableItems
-  .map(
-    (item) => `
-      <div class="item-row">
-        <button id="buy-${item.name}" disabled>
-          <p>${item.name} Owned: <span id="${item.name}-owned">0</span></p>
-          <img src="${item.icon}" class="icon" />
-          <p>Buy ${item.name}: <span id="${item.name}-cost">${item.cost}</span></p>
-        </button>
-        <div class="description">
-          ${item.description}
+function createCatDisplay(): string {
+  return `
+    <div class="left">
+      <div class="cat-info">
+        <b><div>Cats: <span id="counter">0</span></div></b>
+        <div style="font-size: 50%">
+          <span id="growthRate">0</span> cats/sec
         </div>
       </div>
-    `,
-  ).join("");
-
-document.body.innerHTML = `
- <div class="container">
-  <div class="left">
-    <div class="cat-info">
-      <b><div>Cats: <span id="counter">0</span></div></b>
-      <div style="font-size: 50%"><span id="growthRate">0</span> cats/sec</div>
+      <button id="increment">
+        <img src="${catIconUrl}" class="cat-icon" />
+      </button>
     </div>
+  `;
+}
 
-    <button id="increment">
-      <img src="${catIconUrl}" class="cat-icon" />
-    </button>
-  </div>
+function createItemButton(item: Item): string {
+  const safeName = item.name.replace(/\s+/g, "-");
+  return `
+    <div class="item-row">
+      <button id="buy-${safeName}" disabled>
+        <p>${item.name} Owned: <span id="${item.name}-owned">0</span></p>
+        <img src="${item.icon}" class="icon" />
+        <p>Buy ${item.name}: <span id="${item.name}-cost">${item.cost}</span></p>
+      </button>
+      <div class="description">${item.description}</div>
+    </div>
+  `;
+}
 
-  <div class="right">
-    <p>Items:</p>
-    ${itemButtonsHTML}
-  </div>
-</div>
-`;
+function createItemList(): string {
+  return `
+    <div class="right">
+      <p>Items:</p>
+      ${availableItems.map(createItemButton).join("")}
+    </div>
+  `;
+}
+
+function createLayout(): string {
+  return `
+    <div class="container">
+      ${createCatDisplay()}
+      ${createItemList()}
+    </div>
+  `;
+}
+
+document.body.innerHTML = createLayout();
 const container = document.querySelector(".container") as HTMLElement;
 
 //Add click handler
@@ -145,11 +159,8 @@ availableItems.forEach((item) => {
 
 //Update Counter Display
 function updateDisplay() {
-  const intCounter = Math.floor(counter);
-  counterElement.textContent = intCounter.toString();
-
-  const roundedGrowth = Math.round(growthRate * 100) / 100; //rounds to 2 decimals
-  growthElement.textContent = roundedGrowth.toString();
+  counterElement.textContent = Math.floor(counter).toString();
+  growthElement.textContent = (Math.round(growthRate * 100) / 100).toString();
 
   availableItems.forEach((item) => {
     const costElement = document.getElementById(`${item.name}-cost`)!;
