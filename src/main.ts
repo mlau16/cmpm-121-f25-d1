@@ -1,18 +1,26 @@
+// ========================================================================
+// A CAT CLICKER GAME
+// ========================================================================
+
+// ===== IMPORTS =====
 import catToyIconUrl from "./cat-toy.webp";
 import catIconUrl from "./cat.png";
 import meowSoundUrl from "./meow.mp3";
 import milkIconUrl from "./milk.png";
 import mouseIconUrl from "./mouse.png";
+import "./style.css";
 import tunaIconUrl from "./tuna.webp";
 import yarnIconUrl from "./yarn.webp";
 
-import "./style.css";
-
+// ===== FONT SETUP =====
 const fontLink = document.createElement("link");
 fontLink.rel = "stylesheet";
 fontLink.href =
   "https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap";
 document.head.appendChild(fontLink);
+
+// ===== GAME DATA =====
+// Defines items and game state
 
 interface Item {
   name: string;
@@ -66,10 +74,11 @@ const availableItems: Item[] = [
   },
 ];
 
-//counter
 let counter: number = 0;
 let growthRate: number = 0;
 
+// ===== UI SETUP =====
+// Builds HTML using helper functions
 function createCatDisplay(): string {
   return `
     <div class="left">
@@ -118,10 +127,12 @@ function createLayout(): string {
   `;
 }
 
+// ===== PAGE SETUP =====
 document.body.innerHTML = createLayout();
 const container = document.querySelector(".container") as HTMLElement;
 
-//Add click handler
+// ===== EVENT HANDLERS =====
+// Handles clicks and purchases
 const button = document.getElementById("increment")!;
 
 const counterElement = document.getElementById("counter")!;
@@ -157,7 +168,7 @@ availableItems.forEach((item) => {
   });
 });
 
-//Update Counter Display
+// ===== DISPLAY UPDATES =====
 function updateDisplay() {
   counterElement.textContent = Math.floor(counter).toString();
   growthElement.textContent = (Math.round(growthRate * 100) / 100).toString();
@@ -176,7 +187,8 @@ function updateDisplay() {
   });
 }
 
-//Animation using requestAnimationFrame
+// ===== GAME LOOP =====
+// Passive generation of cats
 let lastTime: number | null = null;
 
 function animate(currentTime: number) {
@@ -191,8 +203,8 @@ function animate(currentTime: number) {
 
 requestAnimationFrame(animate);
 
-//floating text inspired by wendyzh05
-
+// ===== FLOATING TEXT EFFECT =====
+// feature inspired by wendyzh05
 function showFloatingText(amount: number, x: number, y: number) {
   const el = document.createElement("div");
   el.className = "floating-text";
