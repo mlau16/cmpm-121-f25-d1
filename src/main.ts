@@ -72,9 +72,9 @@ let growthRate: number = 0;
 
 const itemButtonsHTML = availableItems
   .map(
-    (item, index) => `
+    (item) => `
       <div class="item-row">
-        <button id="buy-${index}" disabled>
+        <button id="buy-${item.name}" disabled>
           <p>${item.name} Owned: <span id="${item.name}-owned">0</span></p>
           <img src="${item.icon}" class="icon" />
           <p>Buy ${item.name}: <span id="${item.name}-cost">${item.cost}</span></p>
@@ -127,9 +127,9 @@ button.addEventListener("click", (ev) => {
   showFloatingText(1, x, y);
 });
 
-availableItems.forEach((item, index) => {
+availableItems.forEach((item) => {
   const buyButton = document.getElementById(
-    `buy-${index}`,
+    `buy-${item.name}`,
   ) as HTMLButtonElement;
 
   buyButton.addEventListener("click", () => {
@@ -151,11 +151,11 @@ function updateDisplay() {
   const roundedGrowth = Math.round(growthRate * 100) / 100; //rounds to 2 decimals
   growthElement.textContent = roundedGrowth.toString();
 
-  availableItems.forEach((item, index) => {
+  availableItems.forEach((item) => {
     const costElement = document.getElementById(`${item.name}-cost`)!;
     const ownedElement = document.getElementById(`${item.name}-owned`)!;
     const buyButton = document.getElementById(
-      `buy-${index}`,
+      `buy-${item.name}`,
     ) as HTMLButtonElement;
 
     const roundedCost = Math.round(item.cost * 100) / 100;
